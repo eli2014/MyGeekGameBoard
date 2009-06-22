@@ -88,7 +88,7 @@ Copyright © 2007 Apple Inc. All Rights Reserved.
     label.anchorPoint = CGPointMake(1,1);
     [label setValue: [NSNumber numberWithFloat: M_PI] forKeyPath: @"transform.rotation"];
     
-    label = AddTextLayer(front, self.faceSymbol, [NSFont systemFontOfSize: 80],
+    label = AddTextLayer(front, self.faceSymbol, [NSFont systemFontOfSize: 60],
                          kCALayerWidthSizable | kCALayerHeightSizable);
     label.foregroundColor = suitColor;
     return front;

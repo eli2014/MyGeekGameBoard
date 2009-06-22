@@ -170,7 +170,7 @@
         if( topDst == nil )
             return YES ;//bottomSrc.rank == kRankKing;
         else
-            return bottomSrc.color == topDst.color && bottomSrc.rank == topDst.rank-1;
+            return bottomSrc.suit == topDst.suit && bottomSrc.rank == topDst.rank-1;
     }
 }
 

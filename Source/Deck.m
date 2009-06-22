@@ -118,17 +118,21 @@ Copyright © 2007 Apple Inc. All Rights Reserved.
 		int max = serials.length;
 		
 		int cardsWanted = numberOfDecks * max;
+		int iterationsNeeded = cardsWanted / 13;
 		
-		
-		for (int c=0; c < cardsWanted; c++) {
-			CardSuit suit;
+		for (int suiteIndex = 0; suiteIndex < iterationsNeeded; suiteIndex++) {
+			CardSuit suit = numberOfSuites == 1 ? kSuitSpades : (suiteIndex % 2) == 0 ? kSuitSpades : kSuitClubs;
 			
-			if(numberOfSuites == 1)
-				suit =kSuitSpades;
-			else
-				suit = (c / 13) % 2 == 0 ? kSuitSpades : kSuitClubs;
-			[_cards addObject:[[PlayingCard alloc] initWithSuit:suit rank: c/13 andPosition:CGPointZero]];
-		}
+			/*
+			 kRankAce = 1,
+			 kRankJack = 11,
+			 kRankQueen = 12,
+			 kRankKing = 13
+			 */
+			for (int rank = kRankAce; rank <= kRankKing; rank++) {
+				[_cards addObject:[[PlayingCard alloc] initWithSuit:suit rank:rank andPosition:CGPointZero]];
+			}
+		}		
 	}
 	
 	return self;
