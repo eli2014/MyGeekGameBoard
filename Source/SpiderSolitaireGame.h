@@ -1,13 +1,13 @@
 
 
 #import "Game.h"
-@class Deck, Stack;
+@class Deck;
 
 
 /** The classic card solitaire game Klondike.
  See: http://en.wikipedia.org/wiki/Klondike_(solitaire) */
 @interface SpiderSolitaireGame : Game {
-    Deck *_deck, *_sink;
+    Deck *_deck;
     Deck *_aces[4];
 	
 	NSMutableArray *stacks;

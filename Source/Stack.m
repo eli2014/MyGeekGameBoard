@@ -127,6 +127,14 @@ Copyright © 2007 Apple Inc. All Rights Reserved.
         [self x_repositionBit: bit forIndex: n];
     }
 }
+- (void) removeBit: (Bit*)bit
+{
+    NSUInteger index = [_bits indexOfObjectIdenticalTo: bit];
+    if( index != NSNotFound ) {
+        [bit removeFromSuperlayer];
+        [_bits removeObjectAtIndex: index];
+    }
+}
 
 
 - (void) setHighlighted: (BOOL)highlighted

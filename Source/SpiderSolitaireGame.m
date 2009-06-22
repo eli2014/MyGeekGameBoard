@@ -27,7 +27,8 @@
         
 		stacks = [[NSMutableArray alloc] init];
 		
-        _deck = [[Deck alloc] initWithPlayingCards:2 numberOfSuites:2];
+        //_deck = [[Deck alloc] initWithPlayingCards:2 numberOfSuites:2];
+		_deck = [[Deck alloc] initWithPlayingCards:2 numberOfSuites:2];
 		NSUInteger i, count = [_deck.cards count];
 		for (i = 0; i < count; i++) {
 			PlayingCard * obj = [_deck.cards objectAtIndex:i];
@@ -35,28 +36,16 @@
 		}
 		
 		[_deck shuffle];	
-        _deck.position = CGPointMake(kCardWidth/2+16,kCardHeight/2+16);
-        [board addSublayer: _deck];
-        
-        _sink = [[Deck alloc] init];
-        _sink.position = CGPointMake(3*kCardWidth/2+32,kCardHeight/2+16);
-        [board addSublayer: _sink];
-        
-//        for( CardSuit suit=kSuitClubs; suit<=kSuitSpades; suit++ ) {
-//            Deck *aces = [[Deck alloc] init];
-//            aces.position = CGPointMake(kCardWidth/2+16+(kCardWidth+16)*(suit%2),
-//                                        120+kCardHeight+(kCardHeight+16)*(suit/2));
-//            [board addSublayer: aces];
-//            _aces[suit] = aces;
-//        }
-        
+		CGPoint p = CGPointMake(kCardWidth/2+16,kCardHeight/2+16);
+        _deck.position = p;
+        [board addSublayer: _deck];        
 		
 		
         for( int s=0; s<10; s++ ) {
             Stack *stack = [[Stack alloc] initWithStartPos: CGPointMake(kCardWidth/2,
                                                                         kStackHeight-kCardHeight/2.0)
                                                    spacing: CGSizeMake(0,-22)];
-            stack.frame = CGRectMake(s*(kCardWidth+16),16, kCardWidth,kStackHeight);
+            stack.frame = CGRectMake(100 + s*(kCardWidth+16),16, kCardWidth,kStackHeight);
             stack.backgroundColor = nil;
             stack.dragAsStacks = YES;
             [board addSublayer: stack];
@@ -72,12 +61,54 @@
 		//setting the topmost card to be faced up		
 		for (Stack *stack in stacks) {
 			((Card*)stack.bits.lastObject).faceUp = YES;
-		}
-        
+		}        
 		
         [self nextPlayer];
     }
     return self;
+}
+
+-(void) checkAndRemoveFullRowOfStack: (Stack* )stack {
+	
+	if([stack.bits count] < 13)
+		return;
+		
+	PlayingCard *topCard = (PlayingCard*)[stack topBit];
+	if(topCard.rank != kRankAce)
+		return;
+	
+	int indexOfTopCard = [stack.bits indexOfObject:topCard];
+	
+	int index = indexOfTopCard;
+	//index runterzählen
+	
+	for (int rank = kRankAce; rank <= kRankKing; rank++) {
+		index = indexOfTopCard - (rank - kRankAce);
+		
+		PlayingCard *cardToCheck = [stack.bits objectAtIndex:index];
+		if(cardToCheck.suit != topCard.suit)
+			return;
+		
+		if(cardToCheck.rank != rank)
+			return;
+
+		//success
+		if(cardToCheck.rank == kRankKing) 
+		{
+			NSLog(@"FOUND FULL ROW");		
+			for(int indexOfCardToRemove = indexOfTopCard; indexOfCardToRemove >= index; indexOfCardToRemove --)
+			{
+				PlayingCard *cardToRemove = [stack.bits objectAtIndex:indexOfCardToRemove];
+				[stack removeBit:cardToRemove];
+			}
+			return;
+		}
+	}
+}
+
+-(void) checkForFullRows {
+	for(Stack* stack in stacks)
+		[self checkAndRemoveFullRowOfStack: stack];
 }
 
 
@@ -95,18 +126,12 @@
 					[stack addBit:card];
 					card.faceUp=YES;
 				}
-			}		           
+			}		    
+			[self checkForFullRows];
             [self endTurn];
             return YES;
-        } else if( card.holder == _sink ) {
-            // Clicking the sink when the deck is empty re-deals:
-            if( _deck.empty ) {
-                [_deck addCards: [_sink removeAllCards]];
-                [_deck flip];
-                [self endTurn];
-                return YES;
-            }
-        } else {
+        }
+		else {
             // Click on a card elsewhere turns it face-up:
             if( ! card.faceUp ) {
                 card.faceUp = YES;
@@ -117,7 +142,6 @@
     return NO;
 }
 
-
 - (BOOL) canBit: (Bit*)bit moveFrom: (id<BitHolder>)src
 {
     if( [bit isKindOfClass: [DraggedStack class]] ) {
@@ -125,11 +149,11 @@
 		
 		PlayingCard *bottomCard = [draggedCards objectAtIndex: 0];
 		
-		for (int c=0; c < [draggedCards count]; c++) {
-			PlayingCard *card = [draggedCards objectAtIndex: c];
+		for (int carcIndex=0; carcIndex < [draggedCards count]; carcIndex++) {
+			PlayingCard *card = [draggedCards objectAtIndex: carcIndex];
 			if (bottomCard.suit != card.suit)
 				return NO;
-			if((bottomCard.rank + c) != card.rank)
+			if((bottomCard.rank - carcIndex) != card.rank)
 				return NO;
 		}
 //        Card *bottomSrc = [[(DraggedStack*)bit bits] objectAtIndex: 0];
@@ -140,10 +164,9 @@
     return YES;
 }
 
-
 - (BOOL) canBit: (Bit*)bit moveFrom: (id<BitHolder>)src to: (id<BitHolder>)dst
 {
-    if( src==_deck || dst==_deck || dst==_sink )
+    if( src==_deck || dst==_deck)
         return NO;
     
     // Find the bottom card being moved, and the top card it's moving onto:
@@ -170,7 +193,8 @@
         if( topDst == nil )
             return YES ;//bottomSrc.rank == kRankKing;
         else
-            return bottomSrc.suit == topDst.suit && bottomSrc.rank == topDst.rank-1;
+            //return bottomSrc.suit == topDst.suit && bottomSrc.rank == topDst.rank-1;
+			return bottomSrc.rank == topDst.rank-1;
     }
 }
 
@@ -184,15 +208,20 @@
 			((Card*)stack.bits.lastObject).faceUp = YES;
 		}		
 	}	
+	[self checkForFullRows];
+	[self endTurn];
 }
 
 
 - (Player*) checkForWinner
 {
-    for( CardSuit suit=kSuitClubs; suit<=kSuitSpades; suit++ )
-        if( _aces[suit].cards.count < 13 )
-            return nil;
-    return _currentPlayer;
+	for(Stack *stack in stacks)
+	{
+		if([stack.bits count] > 0)
+			return nil;
+	}
+	
+	return _currentPlayer;
 }
 
 

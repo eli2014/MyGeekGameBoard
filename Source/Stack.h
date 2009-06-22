@@ -80,7 +80,7 @@ Copyright © 2007 Apple Inc. All Rights Reserved.
 
 /** Adds a Bit to the end */
 - (void) addBit: (Bit*)bit;
-
+- (void) removeBit: (Bit*)bit;
 @end
 
 

@@ -49,8 +49,8 @@ Copyright © 2007 Apple Inc. All Rights Reserved.
 */
 
 
-#import "Deck.h"
 #import "Card.h"
+#import "Deck.h"
 #import "PlayingCard.h"
 #import "Stack.h"
 #import "QuartzUtils.h"
@@ -121,7 +121,7 @@ Copyright © 2007 Apple Inc. All Rights Reserved.
 		int iterationsNeeded = cardsWanted / 13;
 		
 		for (int suiteIndex = 0; suiteIndex < iterationsNeeded; suiteIndex++) {
-			CardSuit suit = numberOfSuites == 1 ? kSuitSpades : (suiteIndex % 2) == 0 ? kSuitSpades : kSuitClubs;
+			CardSuit suit = numberOfSuites == 1 ? kSuitSpades : (suiteIndex % 2) == 0 ? kSuitSpades : kSuitHearts;
 			
 			/*
 			 kRankAce = 1,
@@ -134,6 +134,8 @@ Copyright © 2007 Apple Inc. All Rights Reserved.
 			}
 		}		
 	}
+	[self x_showTopCard];
+
 	
 	return self;
 }
