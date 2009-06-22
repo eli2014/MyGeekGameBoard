@@ -25,8 +25,9 @@
     if (self != nil) {
         [self setNumberOfPlayers: 1];
         
-        _deck = [[Deck alloc] initWithCardsOfClass: [PlayingCard class] numberOfDecks: 2];
+		stacks = [[NSMutableArray alloc] init];
 		
+        _deck = [[Deck alloc] initWithCardsOfClass: [PlayingCard class] numberOfDecks: 2];
 		NSUInteger i, count = [_deck.cards count];
 		for (i = 0; i < count; i++) {
 			PlayingCard * obj = [_deck.cards objectAtIndex:i];
@@ -49,7 +50,7 @@
 //            _aces[suit] = aces;
 //        }
         
-		NSMutableArray *stacks = [[NSMutableArray alloc] init];
+		
 		
         for( int s=0; s<10; s++ ) {
             Stack *stack = [[Stack alloc] initWithStartPos: CGPointMake(kCardWidth/2,
@@ -59,23 +60,16 @@
             stack.backgroundColor = nil;
             stack.dragAsStacks = YES;
             [board addSublayer: stack];
-            
-            // According to the rules, one card should be added to each stack in turn, instead
-            // of populating entire stacks one at a time. However, if one trusts the Deck's
-            // -shuffle method (which uses the random() function, seeded with a high-entropy
-            // cryptographically-strong value), it shouldn't make any difference :-)
-
-			[stacks addObject:stack];
-			
-            //for( int c=0; c<=s; c++ )
-//                [stack addBit: [_deck removeTopCard]];
-//            ((Card*)stack.bits.lastObject).faceUp = YES;
+            [stacks addObject:stack];
         }
+		
+		//dealing 54 cards
 		for (int c=0; c<54; c++) {
 			Stack *stack = [stacks objectAtIndex: c % [stacks count]];
 			[stack addBit: [_deck removeTopCard]];
 		}
 		
+		//setting the topmost card to be faced up		
 		for (Stack *stack in stacks) {
 			((Card*)stack.bits.lastObject).faceUp = YES;
 		}
@@ -92,14 +86,16 @@
     if( [bit isKindOfClass: [Card class]] ) {
         Card *card = (Card*)bit;
         if( card.holder == _deck ) {
-            // Click on deck deals 3 cards to the sink:
-            for( int i=0; i<3; i++ ) {
-                Card *card = [_deck removeTopCard];
-                if( card ) {
-                    [_sink addCard: card];
-                    card.faceUp = YES;
-                }
-            }
+            
+			// Click on deck deals 1 card to each stack, if none of them is empty
+			for (int i=0; i<[stacks count]; i++) {
+				Card *card = [_deck removeTopCard];
+				if(card) {
+					Stack *stack = [stacks objectAtIndex:i];
+					[stack addBit:card];
+					card.faceUp=YES;
+				}
+			}		           
             [self endTurn];
             return YES;
         } else if( card.holder == _sink ) {
@@ -125,10 +121,22 @@
 - (BOOL) canBit: (Bit*)bit moveFrom: (id<BitHolder>)src
 {
     if( [bit isKindOfClass: [DraggedStack class]] ) {
-        Card *bottomSrc = [[(DraggedStack*)bit bits] objectAtIndex: 0];
-        if( ! bottomSrc.faceUp )
-            return NO;
+		NSArray *draggedCards = [(DraggedStack*)bit bits];
+		
+		PlayingCard *bottomCard = [draggedCards objectAtIndex: 0];
+		
+		for (int c=0; c < [draggedCards count]; c++) {
+			PlayingCard *card = [draggedCards objectAtIndex: c];
+			if (bottomCard.suit != card.suit)
+				return NO;
+			if((bottomCard.rank + c) != card.rank)
+				return NO;
+		}
+//        Card *bottomSrc = [[(DraggedStack*)bit bits] objectAtIndex: 0];
+//        if( ! bottomSrc.faceUp )
+//            return NO;
     }
+	NSLog(@"Card %@ is allowed to get moved", bit);
     return YES;
 }
 
@@ -160,10 +168,23 @@
         // Dragging to a card stack:
         topDst = (PlayingCard*) ((Stack*)dst).topBit;
         if( topDst == nil )
-            return bottomSrc.rank == kRankKing;
+            return YES ;//bottomSrc.rank == kRankKing;
         else
-            return bottomSrc.color != topDst.color && bottomSrc.rank == topDst.rank-1;
+            return bottomSrc.color == topDst.color && bottomSrc.rank == topDst.rank-1;
     }
+}
+
+- (void) bit: (Bit*)bit movedFrom: (id<BitHolder>)src to: (id<BitHolder>)dst {
+	if( [src isKindOfClass: [Stack class]] ) {
+		Stack *stack = (Stack*)src;
+		NSLog(@"Stack is now: %@", stack);
+		
+		if([stack.bits count] > 0)
+		{
+			((Card*)stack.bits.lastObject).faceUp = YES;
+		}
+		
+	}	
 }
 
 

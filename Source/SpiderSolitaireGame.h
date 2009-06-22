@@ -9,6 +9,8 @@
 @interface SpiderSolitaireGame : Game {
     Deck *_deck, *_sink;
     Deck *_aces[4];
+	
+	NSMutableArray *stacks;
 }
 
 @end
