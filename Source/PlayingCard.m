@@ -104,6 +104,10 @@ Copyright © 2007 Apple Inc. All Rights Reserved.
     return suit==kSuitDiamonds || suit==kSuitHearts ?kColorRed :kColorBlack;
 }
 
+-(id) initWithSuit:(CardSuit) suit rank:(CardRank) rank andPosition:(CGPoint)pos {
+	int serialNumber = suit*13 + rank;
+	return [super initWithSerialNumber:serialNumber position:pos];
+}
 
 - (NSString*) suitString
 {

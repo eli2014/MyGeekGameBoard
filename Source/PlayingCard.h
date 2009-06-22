@@ -81,4 +81,6 @@ typedef enum {
 @property (readonly) NSString *suitString, *rankString, *faceSymbol;
 @property (readonly) CGColorRef suitColor;
 
+-(id) initWithSuit:(CardSuit) suit rank:(CardRank) rank andPosition:(CGPoint)pos;
+
 @end

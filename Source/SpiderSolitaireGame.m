@@ -27,7 +27,7 @@
         
 		stacks = [[NSMutableArray alloc] init];
 		
-        _deck = [[Deck alloc] initWithCardsOfClass: [PlayingCard class] numberOfDecks: 2];
+        _deck = [[Deck alloc] initWithPlayingCards:2 numberOfSuites:2];
 		NSUInteger i, count = [_deck.cards count];
 		for (i = 0; i < count; i++) {
 			PlayingCard * obj = [_deck.cards objectAtIndex:i];
@@ -182,8 +182,7 @@
 		if([stack.bits count] > 0)
 		{
 			((Card*)stack.bits.lastObject).faceUp = YES;
-		}
-		
+		}		
 	}	
 }
 

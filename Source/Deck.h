@@ -67,7 +67,7 @@ Copyright © 2007 Apple Inc. All Rights Reserved.
 - (id) initWithCardsOfClass: (Class)klass;
 
 - (id) initWithCardsOfClass: (Class)klass numberOfDecks:(int)numberOfDecks;
-
+-(id) initWithPlayingCards: (int)numberOfDecks numberOfSuites:(int)numberOfSuites ;
 
 @property (readonly) NSArray *cards;
 @property (readonly) Card *topCard;             // same as the -bit property

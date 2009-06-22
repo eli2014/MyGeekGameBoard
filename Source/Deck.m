@@ -51,6 +51,7 @@ Copyright © 2007 Apple Inc. All Rights Reserved.
 
 #import "Deck.h"
 #import "Card.h"
+#import "PlayingCard.h"
 #import "Stack.h"
 #import "QuartzUtils.h"
 
@@ -103,6 +104,34 @@ Copyright © 2007 Apple Inc. All Rights Reserved.
         [self x_showTopCard];
     }
     return self;
+}
+
+-(id) initWithPlayingCards: (int)numberOfDecks numberOfSuites:(int)numberOfSuites {
+	
+	if(numberOfSuites == 4)
+		return [self initWithCardsOfClass:[PlayingCard class] numberOfDecks:numberOfDecks];
+		
+	self = [self init];
+    if (self != nil) {
+		// serials of a full deck of cards
+        NSRange serials = [[PlayingCard class] serialNumberRange];		
+		int max = serials.length;
+		
+		int cardsWanted = numberOfDecks * max;
+		
+		
+		for (int c=0; c < cardsWanted; c++) {
+			CardSuit suit;
+			
+			if(numberOfSuites == 1)
+				suit =kSuitSpades;
+			else
+				suit = (c / 13) % 2 == 0 ? kSuitSpades : kSuitClubs;
+			[_cards addObject:[[PlayingCard alloc] initWithSuit:suit rank: c/13 andPosition:CGPointZero]];
+		}
+	}
+	
+	return self;
 }
 
 

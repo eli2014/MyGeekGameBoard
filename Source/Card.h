@@ -76,7 +76,6 @@ Copyright © 2007 Apple Inc. All Rights Reserved.
 + (NSRange) serialNumberRange;
 
 - (id) initWithSerialNumber: (int)serial position: (CGPoint)pos;
-
 @property (readonly) int serialNumber;
 
 /** Cards can be face-up or face-down, of course. */
