@@ -53,8 +53,11 @@ Copyright © 2007 Apple Inc. All Rights Reserved.
 
 
 /** Hardcoded dimensions of a Card */
-#define kCardWidth  100
-#define kCardHeight 150
+//#define kCardWidth  100
+//#define kCardHeight 150
+
+#define kCardWidth  80
+#define kCardHeight 120
 
 
 /* A card of some type (playing card, Community Chest, money, ...)

@@ -37,6 +37,7 @@
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		E26D928D0FEFA0FC00836367 /* SpiderSolitaireGame.m in Sources */ = {isa = PBXBuildFile; fileRef = E26D928C0FEFA0FC00836367 /* SpiderSolitaireGame.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -95,6 +96,8 @@
 		32CA4F630368D1EE00C91783 /* GeekGameBoard_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeekGameBoard_Prefix.pch; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Resources/Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* GeekGameBoard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GeekGameBoard.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E26D928B0FEFA0FC00836367 /* SpiderSolitaireGame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpiderSolitaireGame.h; sourceTree = "<group>"; };
+		E26D928C0FEFA0FC00836367 /* SpiderSolitaireGame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpiderSolitaireGame.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -201,6 +204,8 @@
 				27DFC4400CCD01B7005E34CE /* GoGame.m */,
 				27F230B70CD1A61B006939C1 /* KlondikeGame.h */,
 				27F230B80CD1A61B006939C1 /* KlondikeGame.m */,
+				E26D928B0FEFA0FC00836367 /* SpiderSolitaireGame.h */,
+				E26D928C0FEFA0FC00836367 /* SpiderSolitaireGame.m */,
 			);
 			name = Games;
 			sourceTree = "<group>";
@@ -334,6 +339,7 @@
 				2731E0280CD430B800E6E4C8 /* Deck.m in Sources */,
 				2731E2A80CD5630600E6E4C8 /* BitHolder.m in Sources */,
 				274124060CFCCF9D00842A9B /* DemoBoardView.m in Sources */,
+				E26D928D0FEFA0FC00836367 /* SpiderSolitaireGame.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

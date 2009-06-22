@@ -66,6 +66,9 @@ Copyright © 2007 Apple Inc. All Rights Reserved.
 /** Creates a Deck populated with a full set of cards (in order.) */
 - (id) initWithCardsOfClass: (Class)klass;
 
+- (id) initWithCardsOfClass: (Class)klass numberOfDecks:(int)numberOfDecks;
+
+
 @property (readonly) NSArray *cards;
 @property (readonly) Card *topCard;             // same as the -bit property
 

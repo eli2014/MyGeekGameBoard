@@ -67,11 +67,10 @@ Copyright © 2007 Apple Inc. All Rights Reserved.
 
 
 /** Class names of available games */
-static NSString* const kMenuGameNames[] = {@"KlondikeGame", @"CheckersGame", @"HexchequerGame",
-                                           @"TicTacToeGame", @"GoGame"};
+static NSString* const kMenuGameNames[] = {@"KlondikeGame", @"CheckersGame", @"HexchequerGame", @"TicTacToeGame", @"GoGame", @"SpiderSolitaireGame"};
 
 /** Class name of the current game. */
-static NSString* sCurrentGameName = @"KlondikeGame";
+static NSString* sCurrentGameName = @"SpiderSolitaireGame";
 
 
 - (void) startGameNamed: (NSString*)gameClassName

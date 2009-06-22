@@ -87,13 +87,19 @@ Copyright © 2007 Apple Inc. All Rights Reserved.
 
 - (id) initWithCardsOfClass: (Class)klass
 {
-    self = [self init];
+	return [self initWithCardsOfClass:klass numberOfDecks:1];
+}
+
+- (id) initWithCardsOfClass: (Class)klass numberOfDecks:(int)numberOfDecks {
+	self = [self init];
     if (self != nil) {
         // Create a full deck of cards:
         NSRange serials = [klass serialNumberRange];
-        for( int i=serials.location; i<NSMaxRange(serials); i++ )
-            [_cards addObject: [[klass alloc] initWithSerialNumber: i
-                                                          position: CGPointZero]];
+		for (int deckNumber = 0; deckNumber < numberOfDecks; deckNumber++) {
+			for( int i=serials.location; i<NSMaxRange(serials); i++ )
+				[_cards addObject: [[klass alloc] initWithSerialNumber: i
+															  position: CGPointZero]];
+		}
         [self x_showTopCard];
     }
     return self;
