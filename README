@@ -1,4 +1,5 @@
-This is an extension to Apple's GeekGameBoard
+This is an Spider-Solitaire extension to Apple's CoreAnimation-Example "GeekGameBoard"
 (http://developer.apple.com/samplecode/GeekGameBoard/)
 
-I created an extension of a Spider Solitaire Edition.
+It was initially created by Jens Alfke. See http://mooseyard.com/Jens/2008/03/geekgameboard-getting-closer-to-iphone-ready/ for details. 
+For some reason the latest version of their geekgameboard doesn't work very well on my machine... Perhaps, I'll get back soon and check it out, if I can use their latest release.
