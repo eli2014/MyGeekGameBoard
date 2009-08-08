@@ -58,10 +58,9 @@
 			[stack addBit: [_deck removeTopCard]];
 		}
 		
-		//setting the topmost card to be faced up		
-		for (Stack *stack in stacks) {
-			((Card*)stack.bits.lastObject).faceUp = YES;
-		}        
+		//setting the topmost cards to be faced up		
+			for(Stack* stack in stacks)
+				[self faceupTopmostCardOfStack:stack];    
 		
         [self nextPlayer];
     }
@@ -101,6 +100,8 @@
 				PlayingCard *cardToRemove = [stack.bits objectAtIndex:indexOfCardToRemove];
 				[stack removeBit:cardToRemove];
 			}
+			//turn the remaining topmost-card facedUp
+			[self faceupTopmostCardOfStack:stack];
 			return;
 		}
 	}
@@ -198,15 +199,20 @@
     }
 }
 
+- (void) faceupTopmostCardOfStack: (Stack *) stack  {
+  if([stack.bits count] > 0)
+		{
+			((Card*)stack.bits.lastObject).faceUp = YES;
+		}
+
+}
 - (void) bit: (Bit*)bit movedFrom: (id<BitHolder>)src to: (id<BitHolder>)dst {
 	if( [src isKindOfClass: [Stack class]] ) {
 		Stack *stack = (Stack*)src;
 		NSLog(@"Stack is now: %@", stack);
 		
-		if([stack.bits count] > 0)
-		{
-			((Card*)stack.bits.lastObject).faceUp = YES;
-		}		
+		[self faceupTopmostCardOfStack: stack];
+		
 	}	
 	[self checkForFullRows];
 	[self endTurn];

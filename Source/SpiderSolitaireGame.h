@@ -1,7 +1,7 @@
 
 
 #import "Game.h"
-@class Deck;
+@class Deck, Stack;
 
 
 /** The classic card solitaire game Klondike.
@@ -12,5 +12,10 @@
 	
 	NSMutableArray *stacks;
 }
+
+- (void)faceupTopmostCardOfStack:(Stack *) stack;
+
+
+
 
 @end
